@@ -63,7 +63,7 @@ public class 기능개발 {
             }
 
             // 리스트를 배열로 변환하여 반환
-            int[] answer = new int[answer.size()];
+            int[] answer = new int[list.size()];
             for (int i = 0; i < answer.length; i++) {
                 answer[i] = list.get(i);
             }
