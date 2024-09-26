@@ -27,7 +27,6 @@ public class 인사고과 {
     class Solution {
         public int solution(int[][] scores) {
             int[] wanho = scores[0];
-            int wanhoSum = wanho[0] + wanho[1];
 
             // scores 배열을 근무 태도 점수 기준으로 내림차순, 동료 평가 점수는 오름차순으로 정렬
             // 이렇게 하면 근무 태도 점수가 높은 사람부터 차례로 동료 평가 점수를 확인할 수 있음
