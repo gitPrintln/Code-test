@@ -1,11 +1,13 @@
-package programmers;
+package programmerslv012;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.PriorityQueue;
+import java.util.List;
+import java.util.Stack;
 
-public class 혼자놀기의달인 {
+public class 혼자놀기의달인2 {
 
-    /*
+    /* DFS로 풀이
      * 문제 설명
        혼자서도 잘 노는 범희는 어느 날 방구석에 있는 숫자 카드 더미를 보더니 혼자 할 수 있는 재미있는 게임을 생각해냈습니다.
     
@@ -36,22 +38,13 @@ public class 혼자놀기의달인 {
      */
     class Solution {
         public int solution(int[] cards) {
-            boolean[] opened = new boolean[cards.length]; // 상자의 열림 여부를 기록하는 배열
-            ArrayList<Integer> groupSizes = new ArrayList<>(); // 각 그룹의 크기를 저장할 리스트
+            boolean[] opened = new boolean[cards.length]; // 상자 방문 여부 확인용 배열
+            List<Integer> groupSizes = new ArrayList<>();  // 각 그룹의 크기를 저장할 리스트
 
-            // 모든 상자에 대해 그룹을 형성
-            for (int i = 0; i < cards.length; i++) {
-                if (!opened[i]) { // 아직 열리지 않은 상자라면 그룹 형성
-                    int groupSize = 0;
-                    int current = i;
-
-                    // 현재 상자를 시작으로 그룹을 형성
-                    while (!opened[current]) {
-                        opened[current] = true; // 상자를 열었음을 기록
-                        current = cards[current] - 1; // 다음 열 상자는 카드에 적힌 번호 - 1
-                        groupSize++;
-                    }
-
+            // 모든 상자를 탐색하며 그룹을 형성
+            for (int i = 0;i < cards.length;i++) {
+                if (!opened[i]) { // 아직 방문하지 않은 상자라면 그룹 탐색 시작
+                    int groupSize = dfs(i, cards, opened);
                     groupSizes.add(groupSize); // 형성된 그룹의 크기를 저장
                 }
             }
@@ -67,4 +60,26 @@ public class 혼자놀기의달인 {
             // 가장 큰 두 그룹의 크기를 곱하여 최대 점수를 계산
             return groupSizes.get(0) * groupSizes.get(1);
         }
+
+        // DFS 메서드: 연결된 그룹을 찾고, 그 크기를 반환
+        private int dfs(int current, int[] cards, boolean[] opened) {
+            int groupSize = 0;
+            Stack<Integer> stack = new Stack<>(); // DFS 탐색을 위한 스택
+            stack.push(current);
+
+            while (!stack.isEmpty()) {
+                int node = stack.pop();
+                if (!opened[node]) { // 방문하지 않은 상자라면 방문 표시 및 그룹 크기 증가
+                    opened[node] = true;
+                    groupSize++;
+                    int next = cards[node] - 1; // 다음 상자는 카드에 적힌 번호 - 1 위치
+                    if (!opened[next]) { // 다음 상자가 방문되지 않은 경우만 스택에 추가
+                        stack.push(next);
+                    }
+                }
+            }
+
+            return groupSize;
+        }
+    }
 }
